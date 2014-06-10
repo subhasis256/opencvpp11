@@ -7,6 +7,21 @@
 using namespace cv;
 using namespace std;
 
+/**
+ * This is a wrapper over MatIterator_ to make it consistent with
+ * range based for loops in C++11.
+ * The IterableMat<T> class has a begin() and an end() iterator
+ * that function similarly to MatIterator_<T> class. Also, while
+ * creating the IterableMat, a warning is issued if the type of
+ * the matrix is not the same as T
+ *
+ * A simple way to get an IterableMat<T> from a Mat is to do
+ * iterate<T>(mat). Thus, an easy range based for loop would look
+ * like:
+ *
+ * for(T elem : iterate<T>(mat)) {...}
+ */
+
 template<class Element> class IterableMat : public Mat {
     public:
         struct Iterator {
@@ -43,9 +58,27 @@ template<class Element> class IterableMat : public Mat {
 
 template<class Element>
 IterableMat<Element> iterate(Mat &x) {
-    CHECKER_ASSERT(DataType<Element>::type == x.type(), "WARNING: Data type mismatch in iterable, may lead to wrong results\n");
+    CHECKER_ASSERT(DataType<Element>::type == x.type(),
+            "WARNING: Data type mismatch in iterable, may lead to wrong results\n");
     return IterableMat<Element>(x);
 }
+
+/**
+ * This is another wrapper over MatIterator_ but it also gives the
+ * (x,y) coordinates of the current loop instance.
+ * The EnumerableMat<T> class has an EnumerationIterator
+ * that gives back an Enumeration object upon dereference. The
+ * Enumeration object has three fields: x, y, T& val, which are
+ * set according to the current iteration.
+ *
+ * A simple way to get an EnumerableMat<T> from a Mat is to do
+ * enumerate<T>(mat). Thus, an easy range based for loop would look
+ * like:
+ *
+ * for(auto en : enumerate<float>(mat)) {
+ *      printf("%d %d %f", en.x, en.y, en.val);
+ * }
+ */
 
 template<class Element> class EnumerableMat : public Mat {
     public:
@@ -104,7 +137,8 @@ template<class Element> class EnumerableMat : public Mat {
 
 template<class Element>
 EnumerableMat<Element> enumerate(Mat &x) {
-    CHECKER_ASSERT(DataType<Element>::type == x.type(), "WARNING: Data type mismatch in enumerable, may lead to wrong results\n");
+    CHECKER_ASSERT(DataType<Element>::type == x.type(),
+            "WARNING: Data type mismatch in enumerable, may lead to wrong results\n");
     return EnumerableMat<Element>(x);
 }
 
