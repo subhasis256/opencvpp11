@@ -5,10 +5,10 @@ OpenCV++11: A library for adding C++11 and functional features to OpenCV.
 
 This library is an effort to add C++11 iteration features to OpenCV Mat classes and introduces new features such as per-pixel transformations with lambda expressions to OpenCV. A few examples:
 
-1. Using the `iter<T>` iterator over `Mat`s. This function outputs a warning if there is a mismatch between `T` and the internal `Mat` type.
+1. Using the `iterate<T>` iterator over `Mat`s. This function outputs a warning if there is a mismatch between `T` and the internal `Mat` type.
 ```C++
 Mat image = imread("foo.jpg");
-for(auto f : iter<Vec3b>(image)) {
+for(auto f : iterate<Vec3b>(image)) {
   cout << f << endl;
 }
 ```
