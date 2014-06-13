@@ -1,4 +1,4 @@
-opencvpp11
+opencv++11
 ==========
 
 OpenCV++11: A library for adding C++11 and functional features to OpenCV.
